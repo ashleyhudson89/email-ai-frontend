@@ -19,6 +19,7 @@ export default function EmailSequencerApp() {
       });
 
       const data = await response.json();
+      console.log(data);
       if (data.email) {
         setGeneratedEmail(data.email);
       } else {
