@@ -12,7 +12,7 @@ export default function EmailSequencerApp() {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('https://email-ai-backend-d5y2.onrender.com/api/generate-email', {
+      const response = await fetch('https://email-ai-backend-d5y2.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ goal, tone, context }),
