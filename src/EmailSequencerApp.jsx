@@ -1,9 +1,4 @@
-// EmailSequencerApp.jsx
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
-import { Card, CardContent } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { Button } from '../components/ui/button';
+import React, { useState, useEffect } from 'react';
 
 export default function EmailSequencerApp() {
   const [goal, setGoal] = useState('');
@@ -37,7 +32,7 @@ export default function EmailSequencerApp() {
         setError('An error occurred. Please try again.');
       }
     } catch (err) {
-      console.error("Request failed:", err); // Debug error log
+      console.error("Request failed:", err);
       setError('Failed to connect to the server.');
     } finally {
       setLoading(false);
@@ -45,38 +40,59 @@ export default function EmailSequencerApp() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold">AI Email Sequencer</h1>
+    <div style={{ maxWidth: '600px', margin: '2rem auto', fontFamily: 'Arial, sans-serif' }}>
+      <h1>AI Email Sequencer</h1>
 
-      <Tabs defaultValue="compose">
-        <TabsList>
-          <TabsTrigger value="compose">Compose Email</TabsTrigger>
-          <TabsTrigger value="sequence">Follow-Up Setup</TabsTrigger>
-        </TabsList>
+      <label>
+        Goal:
+        <input
+          type="text"
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
+          placeholder="e.g., Book meetings"
+          style={{ width: '100%', marginBottom: '1rem' }}
+        />
+      </label>
 
-        <TabsContent value="compose">
-          <Card>
-            <CardContent className="space-y-4 p-4">
-              <h2 className="text-xl font-semibold">Compose AI Outreach Email</h2>
-              <Input value={goal} onChange={(e) => setGoal(e.target.value)} placeholder="Goal (e.g., Recruit, Demo, Connect)" />
-              <Input value={tone} onChange={(e) => setTone(e.target.value)} placeholder="Tone (e.g., Professional, Friendly)" />
-              <Textarea value={context} onChange={(e) => setContext(e.target.value)} placeholder="Describe your product, target, or context..." rows={4} />
-              <Button onClick={handleGenerateEmail} disabled={loading}>{loading ? 'Generating...' : 'Generate with AI'}</Button>
-              {error && <p className="text-red-500">{error}</p>}
-              <Textarea value={generatedEmail} readOnly placeholder="Generated email will appear here..." rows={6} />
-            </CardContent>
-          </Card>
-        </TabsContent>
+      <label>
+        Tone:
+        <input
+          type="text"
+          value={tone}
+          onChange={(e) => setTone(e.target.value)}
+          placeholder="e.g., Friendly"
+          style={{ width: '100%', marginBottom: '1rem' }}
+        />
+      </label>
 
-        <TabsContent value="sequence">
-          <Card>
-            <CardContent className="space-y-4 p-4">
-              <h2 className="text-xl font-semibold">Set Up Follow-Up (Coming Soon)</h2>
-              <p className="text-gray-500">This feature will allow you to set up timed follow-up emails automatically.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <label>
+        Context:
+        <textarea
+          value={context}
+          onChange={(e) => setContext(e.target.value)}
+          placeholder="Describe your product or business context..."
+          rows={4}
+          style={{ width: '100%', marginBottom: '1rem' }}
+        />
+      </label>
+
+      <button
+        onClick={handleGenerateEmail}
+        disabled={loading}
+        style={{ padding: '0.5rem 1rem', marginBottom: '1rem' }}
+      >
+        {loading ? 'Generating...' : 'Generate with AI'}
+      </button>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <textarea
+        value={generatedEmail}
+        readOnly
+        placeholder="Your AI-generated email will appear here."
+        rows={6}
+        style={{ width: '100%' }}
+      />
     </div>
   );
 }
